@@ -5,8 +5,8 @@ export class Obstacle {
         this.width = 103.75
         this.height = 70
         this.x = this.game.width
-        this.minY = this.game.height - this.game.groundMargin - (this.game.player.height * 2)
-        this.maxY = this.game.height - this.game.groundMargin
+        this.minY = this.game.height - this.game.groundMargin - (this.game.player.height)
+        this.maxY = this.game.height
         this.y = Math.random() * (this.minY - this.maxY) + this.minY
         this.toDelete = false
         this.minSpeed = 3

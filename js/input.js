@@ -10,7 +10,8 @@ export class Input {
             (event.key === "ArrowLeft" ||
                 event.key === "ArrowRight" ||
                 event.key === "ArrowUp" ||
-                event.key === " "
+                event.key === " " ||
+                event.key === "Enter"
             ) &&
             !this.keys.includes(event.key)) {
             this.keys.push(event.key)
@@ -22,7 +23,8 @@ export class Input {
                 event.key === "ArrowLeft" ||
                 event.key === "ArrowRight" ||
                 event.key === "ArrowUp" ||
-                event.key === " "
+                event.key === " " ||
+                event.key === "Enter"
             ) &&
             this.keys.includes(event.key)) {
             this.keys.splice(this.keys.indexOf(event.key), 1)

@@ -18,12 +18,13 @@ export class Gameover {
         context.font = 50 + 'px ' + this.fontFamilly
         context.fillStyle = `rgba(255,0,0,${this.alpha}`
         context.textAlign = 'center'
-        context.fillText('GAME OVER!', this.game.width / 2, this.game.height / 2)
+        context.fillText('GAME OVER!', this.game.width / 2, this.game.height / 2 - 50)
         context.font = 30 + 'px ' + this.fontFamilly
         context.fillStyle = `rgba(255,255,255,${this.alpha}`
-        context.fillText(this.game.scoreText, this.game.width / 2, this.game.height / 2 + 100)
+        context.fillText(this.game.scoreText, this.game.width / 2, this.game.height / 2 + 50)
         context.font = 20 + 'px ' + this.fontFamilly
         context.fillStyle = `rgba(200,200,200,${this.alpha}`
-        context.fillText('PRESS ENTER TO RESTART', this.game.width / 2, this.game.height / 2 + 40)
+        context.fillText('PRESS ENTER TO RESTART', this.game.width / 2, this.game.height / 2 - 10)
+        context.textAlign = 'left'
     }
 }
