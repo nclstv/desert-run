@@ -17,18 +17,22 @@ export class Obstacle {
         this.maxFrame = 3
     }
     update() {
+        this.movement()
+        this.spriteAnimation()
+    }
+    draw(context) {
+        context.drawImage(this.image, this.frameX * this.width, this.frameY * this.height, this.width, this.height, this.x, this.y, this.width, this.height)
+    }
+    movement() {
         this.x -= this.game.speed + this.speed
         if (this.x + this.width < 0) this.toDelete = true
         this.angle += this.va
-        this.y += Math.cos(this.angle)
-
+        this.y += Math.sin(this.angle)
+    }
+    spriteAnimation() {
         if(this.game.frames % 5 === 0 ) {
             if (this.frameX < this.maxFrame) this.frameX++
             else this.frameX = 0
         }
-    }
-    draw(context) {
-        // context.strokeRect(this.x, this.y, this.width, this.height)
-        context.drawImage(this.image, this.frameX * this.width, this.frameY * this.height, this.width, this.height, this.x, this.y, this.width, this.height)
     }
 }

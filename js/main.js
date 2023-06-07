@@ -3,7 +3,7 @@ import { Input } from "./input.js"
 import { Obstacle } from "./obstacle.js"
 import { UI } from "./UI.js"
 import { Background } from "./background.js"
-import { Sound } from "./audio.js"
+import { Sound } from "./sound.js"
 
 const loaded = () => {
 
@@ -29,18 +29,15 @@ const loaded = () => {
             this.sound = new Sound(this)
         }
         update() {
-            this.background.update(this.input.keys)
-
-            this.scoreIncrement()
             this.frames += 1
 
+            this.scoreIncrement()
+            this.background.update(this.input.keys)
             this.player.update(this.input.keys)
-            if (this.frames % this.obstaclesInterval === 0) this.addObstacle()
 
-            this.obstacles.forEach((obstacle, index) => {
-                if (obstacle.toDelete) this.obstacles.splice(index, 1)
-                obstacle.update()
-            })
+            if (this.frames % this.obstaclesInterval === 0) this.addObstacle()
+            this.updateObstacles()
+            this.spaceSpeedModifier()
         }
         draw(context) {
             this.background.draw(context)
@@ -54,6 +51,16 @@ const loaded = () => {
         scoreIncrement() {
             if (this.frames % 10 === 0) this.score += Math.floor(this.speed)
             this.scoreText = this.score.toString().padStart(6, '0')
+        }
+        updateObstacles() {
+            this.obstacles.forEach((obstacle, index) => {
+                if (obstacle.toDelete) this.obstacles.splice(index, 1)
+                obstacle.update()
+            })
+        }
+        spaceSpeedModifier() {
+           if (this.input.keys.includes(' ')) this.speed = 10
+           else this.speed = 5
         }
     }
 
@@ -74,7 +81,7 @@ const loaded = () => {
         if (game.player.crashed) {
             cancelAnimationFrame(requestAnimation)
             clearInterval(checkCollionInterval)
-            game.sound.pause()
+            game.sound.stopBackgroundMusic()
         }
     }, 20);
 }

@@ -9,12 +9,12 @@ export class Sound {
         this.backgroundMusic.volume = 0.2
         
     }
+    stopBackgroundMusic() {
+        this.backgroundMusic.pause()
+    }
     playJump() {
         this.jump = new Audio('./assets/music/jump.mp3')
         this.jump.play()
         this.jump.volume = 0.05
-    }
-    pause() {
-        this.backgroundMusic.pause()
     }
 }
