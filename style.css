@@ -5,7 +5,7 @@
 }
 
 #game {
-    outline: 5px solid black;
+    display: none;
     position: absolute;
     top: 50%;
     left: 50%;
