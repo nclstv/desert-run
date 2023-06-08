@@ -17,7 +17,7 @@ class Enemy {
         else {
             this.game.player.life -= 1
             this.game.player.hurted = true
-            this.game.sound.die.play()
+            this.game.sound.hurt.play()
 
             setTimeout(() => {
                 this.game.player.hurted = false
