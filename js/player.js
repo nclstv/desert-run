@@ -4,7 +4,7 @@ export class Player {
         this.image = document.getElementById('player')
         this.width = 109.2
         this.height = 119
-        this.x = 0
+        this.x = this.game.width / 5
         this.y = this.game.height - this.height - this.game.groundMargin
         this.vy = 0
         this.weight = 1
@@ -27,12 +27,12 @@ export class Player {
     }
     horizontalMovement(input) {
         this.x += this.speed
-        if (input.includes('ArrowRight')) this.speed = this.maxSpeed
-        else if (input.includes('ArrowLeft')) this.speed = -this.maxSpeed
+        if (input.includes('ArrowRight') && !this.game.menu) this.speed = this.maxSpeed
+        else if (input.includes('ArrowLeft') && !this.game.menu) this.speed = -this.maxSpeed
         else this.speed = 0
     }
     verticalMovement(input) {
-        if (input.includes('ArrowUp') && this.onGround()) {
+        if (input.includes('ArrowUp') && this.onGround() && !this.game.menu) {
             this.vy -= 25
             this.maxFrame = 0
             this.game.sound.playJump()
@@ -40,9 +40,12 @@ export class Player {
         this.y += this.vy
         if (!this.onGround()) {
             this.vy += this.weight
+            this.game.sound.stopRunning()
         } else {
             this.vy = 0
             this.maxFrame = 4
+            if(!this.crashed && !this.game.menu) this.game.sound.playRunning()
+            else this.game.sound.stopRunning()
         }
     }
     borderCollision() {
@@ -59,12 +62,12 @@ export class Player {
         return this.y >= this.game.height - this.height - this.game.groundMargin
     }
     checkCollision() {
-        this.game.obstacles.forEach(obstacle => {
+        this.game.enemies.forEach(enemy => {
             if (
-                obstacle.x < this.x + this.width &&
-                obstacle.x + obstacle.width > this.x &&
-                obstacle.y < this.y + this.height &&
-                obstacle.y + obstacle.height > this.y
+                enemy.x < this.x + this.width &&
+                enemy.x + enemy.width > this.x &&
+                enemy.y < this.y + this.height &&
+                enemy.y + enemy.height > this.y
             ) {
                 this.crashed = true
             }

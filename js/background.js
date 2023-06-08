@@ -9,13 +9,15 @@ class Layer {
         this.y = this.game.height - this.height
     }
     update() {
-        if (this.x < -this.width) this.x = 0
+        if (this.x <= -this.width) this.x = 0
         else this.x -= this.game.speed * this.speedModifier
 
     }
     draw(context) {
+        context.lineWidth = 10
+        // context.strokeRect(this.x, this.y, this.height, this.width)
         context.drawImage(this.image, this.x, this.y, this.width, this.height)
-        context.drawImage(this.image, this.x + this.width, this.y, this.width, this.height)
+        context.drawImage(this.image, this.x - 2 + this.width, this.y, this.width, this.height)
     }
 }
 
@@ -33,7 +35,7 @@ export class Background {
             new Layer(this.game, this.width, this.height, 0, this.image1),
             new Layer(this.game, this.width, this.height, 0.25, this.image2),
             new Layer(this.game, this.width, this.height, 0.5, this.image3),
-            new Layer(this.game, this.width, this.height, 0.75, this.image4),
+            // new Layer(this.game, this.width, this.height, 0.75, this.image4),
             new Layer(this.game, this.width, this.height, 1, this.image5)
         ]
     }

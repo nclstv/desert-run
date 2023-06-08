@@ -1,6 +1,6 @@
 import { Player } from "./player.js"
 import { Input } from "./input.js"
-import { Obstacle } from "./obstacle.js"
+import { Bird, Cactus } from "./enemy.js"
 import { UI } from "./UI.js"
 import { Background } from "./background.js"
 import { Sound } from "./sound.js"
@@ -27,14 +27,14 @@ const loaded = () => {
             constructor(width, height) {
                 this.width = width
                 this.height = height
+                this.menu = true
                 this.speed = 5
-                this.speedRatio = 1
                 this.frames = 0
                 this.score = 0
                 this.highScore = 0
-                this.groundMargin = 160
-                this.obstacles = []
-                this.obstaclesInterval = 60
+                this.groundMargin = 170
+                this.enemies = []
+                this.enemiesInterval = 80
                 this.player = new Player(this)
                 this.background = new Background(this)
                 this.input = new Input(this)
@@ -44,9 +44,8 @@ const loaded = () => {
                 this.collisionInterval = new CollisionInterval(this)
             }
             start() {
-                console.log('start');
                 animate()
-                this.sound.playBackgroundMusic()
+                this.sound.playMenuMusic()
                 canvas.style.display = 'block'
             }
             update() {
@@ -54,19 +53,24 @@ const loaded = () => {
                 if (!this.player.crashed) {
                     this.frames += 1
                     this.scoreIncrement()
-                    this.background.update(this.input.keys)
+                    this.background.update()
                     this.player.update(this.input.keys)
 
-                    if (this.frames % this.obstaclesInterval === 0) this.addObstacle()
-                    this.updateObstacles()
+                    if(!this.menu) this.addEnemies()
+                    this.updateEnemies()
                     this.spaceSpeedModifier()
                 }
 
                 if (this.player.crashed) {
                     this.gameover.update()
-                    if (this.score > this.highScore) this.highScore = this.score
                     if (this.input.keys.includes("Enter")) {
                         this.reset()
+                    }
+                }else {
+                    if (this.input.keys.includes("Enter")) {
+                        this.menu = false
+                        this.sound.menuMusic.pause()
+                        this.sound.playBackgroundMusic()
                     }
                 }
 
@@ -74,41 +78,40 @@ const loaded = () => {
             draw(context) {
                 this.background.draw(context)
                 this.player.draw(context)
-                this.obstacles.forEach(obstacle => { obstacle.draw(context) })
+                this.enemies.forEach(obstacle => { obstacle.draw(context) })
                 this.UI.draw(context)
 
                 if (this.player.crashed) this.gameover.draw(context)
             }
-            addObstacle() {
-                this.obstacles.push(new Obstacle(this))
+            addEnemies() {
+                if (this.frames % this.enemiesInterval === 0) this.enemies.push(new Bird(this))
+                if (this.frames % this.enemiesInterval === 0 && Math.random() > 0.5) this.enemies.push(new Cactus(this))
             }
             scoreIncrement() {
-                if (this.frames % 10 === 0) this.score += Math.floor(this.speed)
+                if (this.frames % 10 === 0 && !this.menu) this.score += Math.floor(this.speed)
                 this.scoreText = this.score.toString().padStart(6, '0')
                 this.highScoreText = this.highScore.toString().padStart(6, '0')
-                this.multiplierText = 'X' + Math.floor(this.speedRatio.toString())
             }
-            updateObstacles() {
-                this.obstacles.forEach((obstacle, index) => {
-                    if (obstacle.toDelete) this.obstacles.splice(index, 1)
-                    obstacle.update()
+            updateEnemies() {
+                this.enemies.forEach((enemy, index) => {
+                    if (enemy.toDelete) this.enemies.splice(index, 1)
+                    enemy.update()
                 })
             }
             spaceSpeedModifier() {
-                if (this.input.keys.includes(' ')) {
-                    this.speedRatio += 0.01
-                    this.speed = 10 * this.speedRatio
+                if (this.input.keys.includes(' ') && !this.menu) {
+                    this.speed = 10
                 }
                 else {
                     this.speed = 5
-                    this.speedRatio = 1
                 }
             }
             reset() {
+                if (this.score > this.highScore) this.highScore = this.score
                 this.frames = 0
                 this.score = 0
-                this.groundMargin = 160
-                this.obstacles = []
+                this.groundMargin = 170
+                this.enemies = []
                 this.sound.stopGameOver()
                 delete this.background
                 delete this.player;

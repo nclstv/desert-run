@@ -15,16 +15,30 @@ export class Gameover {
     }
     draw(context) {
         context.fillRect(this.x, this.y, this.game.width, this.game.height)
+        context.textAlign = 'center'
+
         context.font = 50 + 'px ' + this.fontFamilly
         context.fillStyle = `rgba(255,0,0,${this.alpha}`
-        context.textAlign = 'center'
-        context.fillText('GAME OVER!', this.game.width / 2, this.game.height / 2 - 50)
+        context.fillText('GAME OVER!', this.game.width / 2, this.game.height / 2 - 100)
+
+        context.font = 20 + 'px ' + this.fontFamilly
+        context.fillStyle = `rgba(200,200,200,${this.alpha}`
+        context.fillText('PRESS ENTER TO RESTART', this.game.width / 2, this.game.height / 2 - 60)
+
         context.font = 30 + 'px ' + this.fontFamilly
         context.fillStyle = `rgba(255,255,255,${this.alpha}`
         context.fillText(this.game.scoreText, this.game.width / 2, this.game.height / 2 + 50)
-        context.font = 20 + 'px ' + this.fontFamilly
-        context.fillStyle = `rgba(200,200,200,${this.alpha}`
-        context.fillText('PRESS ENTER TO RESTART', this.game.width / 2, this.game.height / 2 - 10)
+
+        context.font = 30 + 'px ' + this.fontFamilly
+        context.fillStyle = `rgba(150,150,150,${this.alpha}`
+        context.fillText('HI ' + this.game.highScoreText, this.game.width / 2, this.game.height / 2 + 0)
+
+        if (this.game.score > this.game.highScore) {
+            context.font = 20 + 'px ' + this.fontFamilly
+            context.fillStyle = `rgba(0,255,0,${this.alpha}`
+            context.fillText('NEW RECORD', this.game.width / 2, this.game.height / 2 + 120)
+        }
+
         context.textAlign = 'left'
     }
 }
