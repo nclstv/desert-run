@@ -10,10 +10,10 @@ export class Player {
         this.weight = 1
         this.speed = 0
         this.maxSpeed = 10
-        this.crashed = false
         this.frameX = 1
         this.frameY = 0
         this.maxFrame = 4
+        this.crashed = false
     }
     update(input) {
         this.checkCollision()
@@ -35,17 +35,17 @@ export class Player {
         if (input.includes('ArrowUp') && this.onGround() && !this.game.menu) {
             this.vy -= 25
             this.maxFrame = 0
-            this.game.sound.playJump()
+            this.game.sound.jump.play()
         }
         this.y += this.vy
         if (!this.onGround()) {
             this.vy += this.weight
-            this.game.sound.stopRunning()
+            this.game.sound.running.pause()
         } else {
             this.vy = 0
             this.maxFrame = 4
-            if(!this.crashed && !this.game.menu) this.game.sound.playRunning()
-            else this.game.sound.stopRunning()
+            if(!this.crashed && !this.game.menu) this.game.sound.running.play()
+            else this.game.sound.running.pause()
         }
     }
     borderCollision() {
@@ -70,6 +70,21 @@ export class Player {
                 enemy.y + enemy.height > this.y
             ) {
                 this.crashed = true
+            }
+        })
+
+        this.game.bonuses.forEach((bonus, index) => {
+            if (
+                bonus.x < this.x + this.width &&
+                bonus.x + bonus.width > this.x &&
+                bonus.y < this.y + this.height &&
+                bonus.y + bonus.height > this.y
+            ) {
+                if(bonus.id === 'COIN') {
+                    this.game.bonuses.splice(index, 1)
+                    this.game.score += 100
+                    this.game.sound.playCoin()
+                }
             }
         })
     }

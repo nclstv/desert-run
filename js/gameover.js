@@ -6,12 +6,14 @@ export class Gameover {
         this.speed = 100
         this.alpha = 0
         this.fontFamilly = 'Pixel'
-        this.reset = document.getElementById('reset-icon')
+        this.display = false
     }
     update() {
         this.x -= this.speed
         if (this.x <= 0) this.x = 0
         this.alpha += 0.005
+        
+        if (this.game.frames % 40 === 0) this.display = !this.display
     }
     draw(context) {
         context.fillRect(this.x, this.y, this.game.width, this.game.height)
@@ -23,7 +25,7 @@ export class Gameover {
 
         context.font = 20 + 'px ' + this.fontFamilly
         context.fillStyle = `rgba(200,200,200,${this.alpha}`
-        context.fillText('PRESS ENTER TO RESTART', this.game.width / 2, this.game.height / 2 - 60)
+        if (this.display) context.fillText('PRESS ENTER TO RESTART', this.game.width / 2, this.game.height / 2 - 60)
 
         context.font = 30 + 'px ' + this.fontFamilly
         context.fillStyle = `rgba(255,255,255,${this.alpha}`

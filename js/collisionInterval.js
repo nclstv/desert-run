@@ -6,8 +6,9 @@ export class CollisionInterval {
     check() {
         if (this.game.player.crashed) {
 
-            this.game.sound.stopBackgroundMusic()
-            this.game.sound.playGameOver()
+            this.game.sound.wind.pause()
+            this.game.sound.die.play()
+            this.game.sound.gameoverMusic.play()
 
             clearInterval(this.checkInterval)
         }

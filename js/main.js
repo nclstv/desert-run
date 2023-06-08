@@ -5,7 +5,9 @@ import { UI } from "./UI.js"
 import { Background } from "./background.js"
 import { Sound } from "./sound.js"
 import { Gameover } from "./gameover.js"
+import { MenuUI } from "./menu.js"
 import { CollisionInterval } from "./collisionInterval.js"
+import { Coin } from "./element.js"
 
 const loaded = () => {
 
@@ -32,79 +34,94 @@ const loaded = () => {
                 this.frames = 0
                 this.score = 0
                 this.highScore = 0
+                this.scoreText = '000000'
+                this.highScoreText = '000000'
                 this.groundMargin = 170
                 this.enemies = []
                 this.enemiesInterval = 80
+                this.bonuses = []
                 this.player = new Player(this)
                 this.background = new Background(this)
                 this.input = new Input(this)
                 this.UI = new UI(this)
                 this.sound = new Sound(this)
                 this.gameover = new Gameover(this)
+                this.menuUI = new MenuUI(this)
                 this.collisionInterval = new CollisionInterval(this)
             }
             start() {
                 animate()
-                this.sound.playMenuMusic()
+                this.sound.menuMusic.play()
                 canvas.style.display = 'block'
             }
             update() {
 
+                this.frames += 1
+
                 if (!this.player.crashed) {
-                    this.frames += 1
-                    this.scoreIncrement()
                     this.background.update()
                     this.player.update(this.input.keys)
 
-                    if(!this.menu) this.addEnemies()
-                    this.updateEnemies()
-                    this.spaceSpeedModifier()
+
+                    if (!this.menu) {
+                        if (this.input.keys.includes(' ')) this.speed = 15
+                        else this.speed = 10
+
+                        if (this.frames % 10 === 0) this.score += Math.floor(this.speed)
+                        this.scoreText = this.score.toString().padStart(6, '0')
+                        this.highScoreText = this.highScore.toString().padStart(6, '0')
+
+                        this.addEnemies()
+                        this.updateEnemies()
+                        this.addBonuses()
+                        this.updateBonuses()
+                    } else {
+                        this.menuUI.update()
+                    }
+
+                }
+                else {
+                    this.gameover.update()
                 }
 
-                if (this.player.crashed) {
-                    this.gameover.update()
-                    if (this.input.keys.includes("Enter")) {
-                        this.reset()
-                    }
-                }else {
-                    if (this.input.keys.includes("Enter")) {
+                if (this.input.keys.includes("Enter")) {
+                    if(this.menu) {
                         this.menu = false
                         this.sound.menuMusic.pause()
-                        this.sound.playBackgroundMusic()
+                        this.sound.wind.play()
                     }
+                    if (this.player.crashed) this.reset()
                 }
 
             }
             draw(context) {
                 this.background.draw(context)
                 this.player.draw(context)
-                this.enemies.forEach(obstacle => { obstacle.draw(context) })
+                this.enemies.forEach(enemy => { enemy.draw(context) })
+                this.bonuses.forEach(bonus => { bonus.draw(context) })
                 this.UI.draw(context)
 
                 if (this.player.crashed) this.gameover.draw(context)
+                if (this.menu) this.menuUI.draw(context)
             }
             addEnemies() {
                 if (this.frames % this.enemiesInterval === 0) this.enemies.push(new Bird(this))
                 if (this.frames % this.enemiesInterval === 0 && Math.random() > 0.5) this.enemies.push(new Cactus(this))
             }
-            scoreIncrement() {
-                if (this.frames % 10 === 0 && !this.menu) this.score += Math.floor(this.speed)
-                this.scoreText = this.score.toString().padStart(6, '0')
-                this.highScoreText = this.highScore.toString().padStart(6, '0')
-            }
             updateEnemies() {
                 this.enemies.forEach((enemy, index) => {
-                    if (enemy.toDelete) this.enemies.splice(index, 1)
                     enemy.update()
+                    if (enemy.toDelete) this.enemies.splice(index, 1)
                 })
             }
-            spaceSpeedModifier() {
-                if (this.input.keys.includes(' ') && !this.menu) {
-                    this.speed = 10
-                }
-                else {
-                    this.speed = 5
-                }
+            addBonuses() {
+                if (this.frames % 50 === 0 && Math.random() > 0.5) this.bonuses.push(new Coin(this))
+            }
+            updateBonuses() {
+                this.bonuses.forEach((bonus, index) => {
+                    bonus.update()
+                    if (bonus.toDelete) this.bonuses.splice(index, 1)
+                })
             }
             reset() {
                 if (this.score > this.highScore) this.highScore = this.score
@@ -112,7 +129,10 @@ const loaded = () => {
                 this.score = 0
                 this.groundMargin = 170
                 this.enemies = []
-                this.sound.stopGameOver()
+                this.bonuses = []
+                this.sound.gameoverMusic.pause()
+                this.sound.wind.play()
+
                 delete this.background
                 delete this.player;
                 delete this.input
@@ -127,7 +147,6 @@ const loaded = () => {
                 this.sound = new Sound(this)
                 this.gameover = new Gameover(this)
                 this.collisionInterval = new CollisionInterval(this)
-                this.sound.playBackgroundMusic()
             }
         }
 
