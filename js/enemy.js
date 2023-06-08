@@ -9,6 +9,24 @@ class Enemy {
     draw(context) {
         context.drawImage(this.image, this.frameX * this.width, this.frameY * this.height, this.width, this.height, this.x, this.y, this.width, this.height)
     }
+    collision(index) {
+        if (this.game.player.life <= 1) {
+            this.game.player.crashed = true
+            this.game.player.life = 0
+        }
+        else {
+            this.game.player.life -= 1
+            this.game.player.hurted = true
+            this.game.sound.die.play()
+
+            setTimeout(() => {
+                this.game.player.hurted = false
+                this.game.player.display = true
+            }, 3000);
+
+            this.game.enemies.splice(index, 1)
+        }
+    }
 }
 
 export class Bird extends Enemy {

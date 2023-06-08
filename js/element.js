@@ -11,7 +11,6 @@ export class Coin extends Element {
     constructor(game) {
         super(game)
         this.image = document.getElementById('coin')
-        this.id = 'COIN'
         this.width = 50
         this.height = 50
         this.x = this.game.width
@@ -25,5 +24,10 @@ export class Coin extends Element {
     update() {
         this.x -= this.game.speed
         if (this.x + this.width < 0) this.toDelete = true
+    }
+    collision(index) {
+        this.game.bonuses.splice(index, 1)
+        this.game.score += 100
+        this.game.sound.playCoin()
     }
 }
