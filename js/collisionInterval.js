@@ -6,6 +6,7 @@ export class CollisionInterval {
     check() {
         if (this.game.player.crashed) {
             this.game.sound.die.play()
+            this.game.sound.birdsAttack.pause()
             this.game.sound.wind.pause()
             this.game.sound.gameoverMusic.play()
 

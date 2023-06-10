@@ -16,6 +16,7 @@ export class Gameover {
         if (this.game.frames % 40 === 0) this.display = !this.display
     }
     draw(context) {
+        context.fillStyle = 'black'
         context.fillRect(this.x, this.y, this.game.width, this.game.height)
         context.textAlign = 'center'
 

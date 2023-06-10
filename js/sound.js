@@ -28,6 +28,15 @@ export class Sound {
         this.running = new Audio('./assets/sound/running.mp3')
         this.running.volume = this.volume * 0.25
 
+        this.birdsAttack = new Audio('./assets/sound/bird-attack.mp3')
+        this.birdsAttack.volume = this.volume * 2
+
+        this.lucky = new Audio('./assets/sound/lucky.mp3')
+        this.lucky.volume = this.volume
+
+        this.penality = new Audio('./assets/sound/penality.mp3')
+        this.penality.volume = this.volume * 0.25
+
     }
     playCoin() {
         this.coin = new Audio('./assets/sound/coin.mp3')

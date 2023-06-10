@@ -9,31 +9,50 @@
 
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Press Start 2P">
+
 </head>
 
 <body>
 
     <canvas id="game"></canvas>
-    <button id="start">Start game</button>
 
-    <img hidden src="assets/layer/layer_01.png" id="layer_01"/>
-    <img hidden src="assets/layer/layer_02.png" id="layer_02"/>
-    <img hidden src="assets/layer/layer_03.png" id="layer_03"/>
-    <img hidden src="assets/layer/layer_04.png" id="layer_04"/>
-    <img hidden src="assets/layer/layer_05.png" id="layer_05"/>
+    <div class="container">
+        <h1 class="title">DESERT RUN</h1>
+        <button id="start">START GAME</button>
+        <div class="instructions">
+            <h2>HOW TO PLAY ?</h2>
+            <ul>
+                <li>USE ARROW TO MOVE AND JUMP</li>
+                <li>USE SPACEBAR TO RUN FASTER (X2 BONUS)</li>
+                <li>STAY ALIVE AS LONG AS POSSIBLE, YOU HAVE 3 LIFE<img src="assets/heart.png" /></li>
+                <li>COLLECT <img src="assets/coin.png" /> (+100 SCORE)</li>
+                <li><img src="assets/lucky.png" /> CAN GIVE YOU BONUS OR PENALITY</li>
+                <li>AVOID <img src="assets/cactus.png" /> AND <img src="assets/bird.png" /></li>
+            </ul>
+        </div>
+        <p>2023 © NICOLAS STEVENS</p>
+    </div>
 
-    <img hidden src="assets/missile.png" id="missile"/>
-    <img hidden src="assets/cactus.png" id="cactus"/>
-    
-    <img hidden src="assets/coin.png" id="coin"/>
+    <img hidden src="assets/layer/layer_01.png" id="layer_01" />
+    <img hidden src="assets/layer/layer_02.png" id="layer_02" />
+    <img hidden src="assets/layer/layer_03.png" id="layer_03" />
+    <img hidden src="assets/layer/layer_04.png" id="layer_04" />
+    <img hidden src="assets/layer/layer_05.png" id="layer_05" />
 
-    <img hidden src="assets/heart.png" id="heart"/>
+    <img hidden src="assets/missile.png" id="missile" />
+    <img hidden src="assets/cactus.png" id="cactus" />
+
+    <img hidden src="assets/coin.png" id="coin" />
+    <img hidden src="assets/lucky.png" id="lucky" />
+
+    <img hidden src="assets/heart.png" id="heart" />
+    <img hidden src="assets/boom.png" id="boom" />
 
 
 
-    <img hidden src="assets/player.png" id="player"/>    
-    <img hidden src="assets/jump.png" id="jump"/>    
-    
+    <img hidden src="assets/player.png" id="player" />
+    <img hidden src="assets/jump.png" id="jump" />
+
     <script type="module" src="js/main.js"></script>
 </body>
 

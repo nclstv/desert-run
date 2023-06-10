@@ -12,7 +12,7 @@ export class Player {
         this.weight = 1
         this.speed = 0
         this.maxSpeed = 10
-        this.frameX = 1
+        this.frameX = 0
         this.frameY = 0
         this.maxFrame = 9
         this.crashed = false

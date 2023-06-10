@@ -7,7 +7,7 @@ import { Sound } from "./sound.js"
 import { Gameover } from "./gameover.js"
 import { MenuUI } from "./menu.js"
 import { CollisionInterval } from "./collisionInterval.js"
-import { Coin } from "./element.js"
+import { Coin, LuckyBlock } from "./element.js"
 
 const loaded = () => {
 
@@ -33,12 +33,14 @@ const loaded = () => {
                 this.speed = 5
                 this.frames = 0
                 this.score = 0
+                this.scoreRatio = 1
                 this.highScore = 0
                 this.enemies = []
                 this.bonuses = []
                 this.enemiesInterval = 80
                 this.bonusesInterval = 50
                 this.groundMargin = 170
+                this.luckyID = null
                 this.player = new Player(this)
                 this.background = new Background(this)
                 this.input = new Input(this)
@@ -55,7 +57,7 @@ const loaded = () => {
             }
             update() {
                 this.frames += 1
-
+        
                 if (this.player.crashed) {
                     this.gameover.update()
                     if (this.input.keys.includes("Enter")) this.reset()
@@ -77,8 +79,10 @@ const loaded = () => {
 
                 if (!this.player.crashed && !this.menu) {
 
-                    if (this.input.keys.includes(' ')) this.speed = 15
-                    else this.speed = 10
+                    if (this.luckyID !== 'SPEEDX2') {
+                        if (this.input.keys.includes(' ')) this.speed = 15
+                        else this.speed = 10
+                    }
 
                     this.UI.update()
 
@@ -90,9 +94,20 @@ const loaded = () => {
                     this.enemies.forEach((enemy) => enemy.update())
                     this.bonuses.forEach((bonus) => bonus.update())
                 }
+
+                if(this.luckyID === 'BIRDSATTACK') canvas.style.animation = 'shake 0.5s';
+                else canvas.style.filter = 'none'
             }
 
             draw(context) {
+
+                ctx.save();
+                let dx = Math.random()*5;
+                let dy = Math.random()*5;
+                
+                if(this.luckyID === 'BIRDSATTACK' && !this.player.crashed) ctx.translate(dx, dy);    
+
+
                 this.background.draw(context)
                 this.bonuses.forEach(bonus => { bonus.draw(context) })
                 this.enemies.forEach(enemy => { enemy.draw(context) })
@@ -101,25 +116,33 @@ const loaded = () => {
 
                 if (this.player.crashed) this.gameover.draw(context)
                 if (this.menu) this.menuUI.draw(context)
+
+                ctx.restore()
             }
 
             addEnemies() {
                 if (this.frames % this.enemiesInterval === 0) {
                     this.enemies.push(new Bird(this))
                 }
-                if (this.frames % this.enemiesInterval === 0 && Math.random() > 0.5) {
+                if (this.frames % this.enemiesInterval === 0 && Math.random() > 0.5 && this.luckyID !== 'BIRDSATTACK') {
                     this.enemies.push(new Cactus(this))
                 }
             }
             addBonuses() {
-                if (this.frames % this.bonusesInterval === 0 && Math.random() > 0.5) {
-                    this.bonuses.push(new Coin(this))
+                if (this.frames % this.bonusesInterval === 0) {
+
+                    this.containLucky = this.bonuses.some(e => e.id === 'LUCKY')
+
+                    if (Math.random() > 0.5) this.bonuses.push(new Coin(this))
+                    else if (Math.random() < 0.25 && !this.containLucky && !this.luckyID) this.bonuses.push(new LuckyBlock(this))
                 }
             }
             reset() {
                 if (this.score > this.highScore) this.highScore = this.score
                 this.frames = 0
                 this.score = 0
+                this.luckyID = null
+                this.enemiesInterval = 80
                 this.groundMargin = 170
                 this.enemies = []
                 this.bonuses = []
@@ -166,9 +189,12 @@ const loaded = () => {
         }
 
         const startButton = document.getElementById('start')
+        const container = document.querySelector('.container')
+
         startButton.addEventListener('click', () => {
             game.start()
             startButton.style.display = 'none'
+            container.style.display = 'none'
         })
 
     })

@@ -7,17 +7,45 @@ class Layer {
         this.image = image
         this.x = 0
         this.y = this.game.height - this.height
+        this.hue = 360
+        this.contrast = 100
+        this.brightness = 100
+        this.sepia = 0
+        this.isDay = true
     }
     update() {
         if (this.x <= -this.width) this.x = 0
         else this.x -= this.game.speed * this.speedModifier
 
+        console.log(this.game.frames);
+
+        if(this.game.frames % 2000 === 0) this.isDay = !this.isDay
+
+        if(!this.isDay) this.dayToNight()
+        else this.nightToDay()
+
     }
     draw(context) {
-        context.lineWidth = 10
-        // context.strokeRect(this.x, this.y, this.height, this.width)
+        context.filter = `hue-rotate(${this.hue}deg) contrast(${this.contrast}%) brightness(${this.brightness}%) sepia(${this.sepia}%)`
         context.drawImage(this.image, this.x, this.y, this.width, this.height)
         context.drawImage(this.image, this.x - 2 + this.width, this.y, this.width, this.height)
+        context.filter = 'none'
+    }
+    dayToNight() {
+        if(this.game.frames % 5 === 0) {
+            if(this.hue > 200) this.hue -= 2
+            if(this.contrast < 120) this.contrast += 0.5
+            if(this.brightness > 70) this.brightness -= 0.5
+            if(this.sepia < 20) this.sepia += 0.5
+        }
+    }
+    nightToDay() {
+        if(this.game.frames % 5 === 0) {
+            if(this.hue < 360) this.hue += 2
+            if(this.contrast > 100) this.contrast -= 0.5
+            if(this.brightness < 100) this.brightness += 0.5
+            if(this.sepia > 0) this.sepia -= 0.5
+        }
     }
 }
 

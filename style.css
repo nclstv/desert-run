@@ -1,7 +1,38 @@
 * {
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    /* overflow: hidden; */
+}
+
+body {
+    font-family: 'Press Start 2P';
+    display: flex;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: url('assets/background.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: fixed;
+    color: rgb(255, 255, 255);
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 50px;
+    margin: 50px;
+    border-radius: 5px;
+    backdrop-filter: blur(100px);
+}
+
+.container > p {
+    margin: 25px 0 0;
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 14px;
 }
 
 #game {
@@ -12,3 +43,51 @@
     transform: translate(-50%, -50%);
 }
 
+.title {
+    font-size: 3rem;
+}
+
+#start {
+    font-family: 'Press Start 2P';
+    padding: 2rem 5rem;
+    font-size: 1.5rem;
+    outline: none;
+    border: none;
+    font-weight: 900;
+    cursor: pointer;
+    background: #ff8c00;
+    margin: 50px 0;
+    box-shadow: -5px 5px 0px 5px #c56c00;
+}
+
+#start:hover {
+    transform: scale(1.02);
+}
+
+.instructions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.instructions ul{
+    margin: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.instructions li{
+    margin: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.instructions li img {
+    height: 40px;
+    margin: 0 15px;
+}

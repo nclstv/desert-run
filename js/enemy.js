@@ -36,9 +36,9 @@ export class Bird extends Enemy {
         this.width = 103.75
         this.height = 70
         this.x = this.game.width
-        this.minY = this.game.height - this.game.groundMargin - (this.game.player.height)
-        this.maxY = this.game.height
-        this.y = Math.random() * (this.minY - this.maxY) + this.minY
+        this.minY = this.game.player.height * 3
+        this.maxY = this.game.height - this.game.groundMargin - (this.game.player.height)
+        this.y = Math.random() * (this.maxY - this.minY + 1) + this.minY
         this.toDelete = false
         this.minSpeed = 3
         this.maxSpeed = 10
@@ -47,7 +47,7 @@ export class Bird extends Enemy {
         this.va = Math.random() * 0.1 + 0.1
         this.frameX = 0
         this.frameY = 0
-        this.maxFrame = 3 
+        this.maxFrame = 3
     }
     movement() {
         this.x -= this.game.speed + this.speed
@@ -56,7 +56,7 @@ export class Bird extends Enemy {
         this.y += Math.sin(this.angle)
     }
     spriteAnimation() {
-        if(this.game.frames % 5 === 0 ) {
+        if (this.game.frames % 5 === 0) {
             if (this.frameX < this.maxFrame) this.frameX++
             else this.frameX = 0
         }
@@ -83,3 +83,4 @@ export class Cactus extends Enemy {
 
     }
 }
+
