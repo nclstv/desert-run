@@ -58,7 +58,7 @@ const loaded = () => {
             }
             update() {
                 this.frames += 1
-                if(this.frames % 2000 === 0) this.isDay = !this.isDay
+                if (this.frames % 2000 === 0) this.isDay = !this.isDay
 
                 if (this.player.crashed) {
                     this.gameover.update()

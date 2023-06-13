@@ -63,7 +63,7 @@ export class LuckyBlock extends Element {
         else {
             this.game.sound.penality.play()
             if (Math.random() > 0.5 && this.game.isDay) this.birdAttack()
-            else this.speedX2
+            else this.speedX2()
         }
     }
     X(ratio) {
