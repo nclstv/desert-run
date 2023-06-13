@@ -55,17 +55,15 @@ export class LuckyBlock extends Element {
 
         if (Math.random() > 0.5) {
             this.game.sound.lucky.play()
-            if(Math.random() < 0.05 && this.game.player.life < 3) this.game.player.life += 1
+            if (Math.random() < 0.05 && this.game.player.life < 3) this.life()
             else if (Math.random() < 0.25) this.X(10)
             else if (Math.random() < 0.5) this.X(5)
-            else {
-                if(Math.random() > 0.5) this.X(2)
-            }
+            else this.X(2)
         }
         else {
             this.game.sound.penality.play()
-            if(Math.random() > 0.5) this.speedX2()
-            else this.birdAttack()
+            if (Math.random() > 0.5 && this.game.isDay) this.birdAttack()
+            else this.speedX2
         }
     }
     X(ratio) {
@@ -85,6 +83,14 @@ export class LuckyBlock extends Element {
             this.game.speed = 10
             this.game.luckyID = null
         }, 1000 * 10);
+    }
+    life() {
+        this.game.luckyID = 'LIFE'
+        this.game.player.life += 1
+
+        setTimeout(() => {
+            this.game.luckyID = null
+        }, 1000 * 3);
     }
     birdAttack() {
         this.game.luckyID = 'BIRDSATTACK'

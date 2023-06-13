@@ -11,17 +11,12 @@ class Layer {
         this.contrast = 100
         this.brightness = 100
         this.sepia = 0
-        this.isDay = true
     }
     update() {
         if (this.x <= -this.width) this.x = 0
         else this.x -= this.game.speed * this.speedModifier
 
-        console.log(this.game.frames);
-
-        if(this.game.frames % 2000 === 0) this.isDay = !this.isDay
-
-        if(!this.isDay) this.dayToNight()
+        if(!this.game.isDay) this.dayToNight()
         else this.nightToDay()
 
     }
@@ -57,7 +52,7 @@ export class Background {
         this.image1 = document.getElementById('layer_01')
         this.image2 = document.getElementById('layer_02')
         this.image3 = document.getElementById('layer_03')
-        this.image4 = document.getElementById('layer_04')
+        // this.image4 = document.getElementById('layer_04')
         this.image5 = document.getElementById('layer_05')
         this.backgroundLayers = [
             new Layer(this.game, this.width, this.height, 0, this.image1),

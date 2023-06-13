@@ -35,6 +35,7 @@ export class UI {
         if (this.game.luckyID === 'X10') context.fillText('SCORE X10', this.game.width / 2, this.game.height / 4)
         if (this.game.luckyID === 'X5') context.fillText('SCORE X5', this.game.width / 2, this.game.height / 4)
         if (this.game.luckyID === 'X2') context.fillText('SCORE X2', this.game.width / 2, this.game.height / 4)
+        if (this.game.luckyID === 'LIFE') context.fillText('+1 LIFE', this.game.width / 2, this.game.height / 4)
 
 
         context.fillStyle = 'rgb(205,0,0,0.8)'

@@ -1,6 +1,6 @@
 import { Player } from "./player.js"
 import { Input } from "./input.js"
-import { Bird, Cactus } from "./enemy.js"
+import { Bird, Cactus, Wolf } from "./enemy.js"
 import { UI } from "./UI.js"
 import { Background } from "./background.js"
 import { Sound } from "./sound.js"
@@ -41,6 +41,7 @@ const loaded = () => {
                 this.bonusesInterval = 50
                 this.groundMargin = 170
                 this.luckyID = null
+                this.isDay = true
                 this.player = new Player(this)
                 this.background = new Background(this)
                 this.input = new Input(this)
@@ -57,7 +58,8 @@ const loaded = () => {
             }
             update() {
                 this.frames += 1
-        
+                if(this.frames % 2000 === 0) this.isDay = !this.isDay
+
                 if (this.player.crashed) {
                     this.gameover.update()
                     if (this.input.keys.includes("Enter")) this.reset()
@@ -95,17 +97,17 @@ const loaded = () => {
                     this.bonuses.forEach((bonus) => bonus.update())
                 }
 
-                if(this.luckyID === 'BIRDSATTACK') canvas.style.animation = 'shake 0.5s';
+                if (this.luckyID === 'BIRDSATTACK') canvas.style.animation = 'shake 0.5s';
                 else canvas.style.filter = 'none'
             }
 
             draw(context) {
 
                 ctx.save();
-                let dx = Math.random()*5;
-                let dy = Math.random()*5;
-                
-                if(this.luckyID === 'BIRDSATTACK' && !this.player.crashed) ctx.translate(dx, dy);    
+                let dx = Math.random() * 5;
+                let dy = Math.random() * 5;
+
+                if (this.luckyID === 'BIRDSATTACK' && !this.player.crashed) ctx.translate(dx, dy);
 
 
                 this.background.draw(context)
@@ -122,7 +124,8 @@ const loaded = () => {
 
             addEnemies() {
                 if (this.frames % this.enemiesInterval === 0) {
-                    this.enemies.push(new Bird(this))
+                    if (this.isDay) this.enemies.push(new Bird(this))
+                    else this.enemies.push(new Wolf(this))
                 }
                 if (this.frames % this.enemiesInterval === 0 && Math.random() > 0.5 && this.luckyID !== 'BIRDSATTACK') {
                     this.enemies.push(new Cactus(this))
@@ -146,6 +149,7 @@ const loaded = () => {
                 this.groundMargin = 170
                 this.enemies = []
                 this.bonuses = []
+                this.isDay = true
                 this.sound.gameoverMusic.pause()
                 this.sound.wind.play()
 
